@@ -1,0 +1,36 @@
+#! /usr/bin/env python3
+
+
+import sys
+from igpay import igpay
+
+# make sure there is at least one argument.
+if len(sys.argv) < 2:
+	print("Error: Requires one argument")
+	sys.exit()
+
+f = open(sys.argv[1], 'r+')
+LoadedFile = f.read()
+f.close()
+
+# Start converting the document
+TempWord = ""
+OutputString = ""
+
+#search through the file and igpay words.
+for c in LoadedFile:
+	if c.isalpha():
+		# it is a letter.
+		TempWord += c
+		continue
+	else:
+		# it is not a letter.
+		# Convert the word and output it.
+		OutputString += igpay(TempWord)
+
+		# reset the word and output the c.
+		TempWord = ""
+		OutputString += c
+
+
+print(OutputString)
