@@ -20,7 +20,11 @@
 # 19 - XIX
 # 20 - XX
 
-
+# used to generate all of the values for the user to reference.
+def _Generate_Globals():
+    for x in range(0, 1001):
+        Name = str(Roman(x))
+        globals()[Name] = Roman(x)
 
 # To correctly view this file please use 'Times new roman' font.
 class Roman:
@@ -65,12 +69,13 @@ class Roman:
 
     # Convert the roman string to int.
     def _tointfromstring(self, arg):
-        print("TO DO TO DO TO DO TO DO TO DO TO DO TO DO")
-
         return ""
 
     # Process the argument provided and set it to the local int.
     def _set_roman(self, arg):
+
+        if arg >= 2000000:
+            raise ValueError
 
         result = 0
 
@@ -94,7 +99,6 @@ class Roman:
 
     # Turns the self.RomanValue into a string.
     def _ConvertToRomainString(self, arg=None):
-        #print("self {} arg {}".format(self.RomanValue, arg))
 
         # first?
         if arg == None:
@@ -124,44 +128,54 @@ class Roman:
         # If there is no key assume empty?
         return ""
 
+    def _GetValueOfMaybeRoman(self, arg):
+
+        if isinstance(arg, Roman):
+            return arg.RomanValue
+        else:
+            return arg
 
     def __str__(self):
         return self._ConvertToRomainString()
 
         # Test equality.
 
+    def __repr__(self):
+        return "Roman({})".format(self.RomanValue)
+
     def __eq__(self, other):  # ==
-        if self.RomanValue == other.RomanValue:
+
+        if self.RomanValue == self._GetValueOfMaybeRoman(other):
             return True
         else:
             return False
 
     def __ne__(self, other):  # !=
-        if self.RomanValue != other.RomanValue:
+        if self.RomanValue != self._GetValueOfMaybeRoman(other):
             return True
         else:
             return False
 
     def __lt__(self, other):  # <
-        if self.RomanValue < other.RomanValue:
+        if self.RomanValue < self._GetValueOfMaybeRoman(other):
             return True
         else:
             return False
 
     def __gt__(self, other):  # >
-        if self.RomanValue > other.RomanValue:
+        if self.RomanValue > self._GetValueOfMaybeRoman(other):
             return True
         else:
             return False
 
     def __le__(self, other):  # <=
-        if self.RomanValue <= other.RomanValue:
+        if self.RomanValue <= self._GetValueOfMaybeRoman(other):
             return True
         else:
             return False
 
     def __ge__(self, other):  # >=
-        if self.RomanValue >= other.RomanValue:
+        if self.RomanValue >= self._GetValueOfMaybeRoman(other):
             return True
         else:
             return False
@@ -170,23 +184,24 @@ class Roman:
         return Roman(self.RomanValue * -1)
 
     def __add__(self, other):
-        return Roman(self.RomanValue + other.RomanValue)
+        return Roman(self.RomanValue + self._GetValueOfMaybeRoman(other))
 
     def __sub__(self, other):
-        return Roman(self.RomanValue - other.RomanValue)
+        return Roman(self.RomanValue - self._GetValueOfMaybeRoman(other))
 
     def __mul__(self, other):
-        return Roman(self.RomanValue * other.RomanValue)
+        return Roman(self.RomanValue * self._GetValueOfMaybeRoman(other))
 
     def __floordiv__(self, other):  # //
-        return Roman(self.RomanValue // other.RomanValue)
+        return Roman(self.RomanValue // self._GetValueOfMaybeRoman(other))
 
     def __truediv__(self, other): # /
-        return Roman(self.RomanValue / other.RomanValue), Roman(self.RomanValue % other.RomanValue)
+        return Roman(self.RomanValue / self._GetValueOfMaybeRoman(other)), Roman(self.RomanValue % self._GetValueOfMaybeRoman(other))
 
     def __pow__(self, other): # **
-        return Roman(self.RomanValue ** other.RomanValue)
+        return Roman(self.RomanValue ** self._GetValueOfMaybeRoman(other))
 
+_Generate_Globals()
 
 if __name__ == '__main__':
     print("Roman self test: Written by David Harkins.")
@@ -196,6 +211,7 @@ if __name__ == '__main__':
 
     # Pure Roman operations.
 
+    print("\nRoman operations with Roman.")
     # X + Y
     print("III + VII (X): {}".format((III + VII)))
     # X - Y
@@ -227,36 +243,34 @@ if __name__ == '__main__':
 
     # Roman plus int
 
-    # X + 5
-    print("III + 5 (X): {}".format((III + 5)))
-    # X - 5
-    print("III - 5 (-IV): {}".format((III - 5)))
-    # X * 5
-    print("III * 5 (XXI): {}".format((III * 5)))
-    # X / 5
-    TrueDivision = (III / 5)
-    print("III / 5 ((N, III)): ({}, {})".format(TrueDivision[0], TrueDivision[1]))
-    # X // 5
-    print("III // 5 (N): {}".format((III // 5)))
-    # X ** 5
-    print("III ** 5 (MMCLXXXVII): {}".format((III ** 5)))
-    # X == 5
-    print("III == 5 (False): {}".format((III == 5)))
-    # X != 5
-    print("III != 5 (True): {}".format((III != 5)))
-    # X < 5
-    print("III < 5 (True): {}".format((III < 5)))
-    # X > 5
-    print("III > 5 (False): {}".format((III > 5)))
-    # X <= 5
-    print("III <= 5 (True): {}".format((III <= 5)))
-    # X >= 5
-    print("III >= 5 (False): {}".format((III >= 5)))
+    print("\nRoman operations with int.")
+    # X + 7
+    print("III + 7 (X): {}".format((III + 7)))
+    # X - 7
+    print("III - 7 (-IV): {}".format((III - 7)))
+    # X * 7
+    print("III * 7 (XXI): {}".format((III * 7)))
+    # X / 7
+    TrueDivision = (III / 7)
+    print("III / 7 ((N, III)): ({}, {})".format(TrueDivision[0], TrueDivision[1]))
+    # X // 7
+    print("III // 7 (N): {}".format((III // 7)))
+    # X ** 7
+    print("III ** 7 (MMCLXXXVII): {}".format((III ** 7)))
+    # X == 7
+    print("III == 7 (False): {}".format((III == 7)))
+    # X != 7
+    print("III != 7 (True): {}".format((III != 7)))
+    # X < 7
+    print("III < 7 (True): {}".format((III < 7)))
+    # X > 7
+    print("III > 7 (False): {}".format((III > 7)))
+    # X <= 7
+    print("III <= 7 (True): {}".format((III <= 7)))
+    # X >= 7
+    print("III >= 7 (False): {}".format((III >= 7)))
+
+    # global test.
+    print("III*XI + CM*II = {}".format(III * XI + CM * II))
 
 
-
-
-
-
-    SS = Roman(0)
-    print(SS)
