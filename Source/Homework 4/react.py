@@ -86,11 +86,9 @@ class ChainReaction():
             # Create a empty place to store the reactions.
         self.StoredReactions = []
         self.ReactionName = Name
-        pass
 
     def addReaction(self, ReactionToAdd):
         self.StoredReactions.append([ReactionToAdd])
-        #print(self.StoredReactions)
 
     def CalculateNet(self):
 
@@ -103,29 +101,23 @@ class ChainReaction():
             # for each reaction split it apart.
         for x in self.StoredReactions:
 
-            # print("X: {}".format(x[0]))
-            #print(lhsNet_Unclean)
+            for c in x[0].left:
+                lhsNet_Unclean.append(c)
 
-            lhsNet_Unclean.append(x[0].left[0])
-            lhsNet_Unclean.append(x[0].left[1])
+            for c in x[0].right:
+                rhsNet_Unclean.append(c)
 
-            rhsNet_Unclean.append(x[0].right[0])
-            rhsNet_Unclean.append(x[0].right[1])
 
-        print("{}\n{}".format(lhsNet_Unclean, rhsNet_Unclean))
 
 
         dupe = True
             # Remove the duplicates.
         while dupe:
-            #print("CC:\n{}\n{}\n".format(lhsNet_Unclean, rhsNet_Unclean))
 
             dupe = False
             for i in range(0, len(lhsNet_Unclean)):
                 for g in range(0, len(rhsNet_Unclean)):
                     if lhsNet_Unclean[i] == rhsNet_Unclean[g]:
-
-                        print(lhsNet_Unclean[i],rhsNet_Unclean[g])
 
                         del lhsNet_Unclean[i]
                         del rhsNet_Unclean[g]
@@ -137,9 +129,7 @@ class ChainReaction():
 
         lhs_result = ""
         rhs_result = ""
-        #print(lhsNet_Unclean[0].GenerateSide(lhsNet_Unclean[0]))
 
-        #print(lhsNet_Unclean)
 
         for x in lhsNet_Unclean:
             if lhs_result == "":
@@ -196,6 +186,6 @@ for rctn in ( Reaction (( p , p ) , (d , ep , nu_e )) ,
     chnPP . addReaction ( rctn )
 
 #debugging.
-print("\n")
+#print("\n")
 
 print(chnPP)
