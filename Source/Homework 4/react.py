@@ -1,10 +1,39 @@
-from particle import Particle
+
+class Particle:
+
+    def __init__(self, sym, chg, massNumber):
+        self.sym = sym
+        self.chg = chg
+        self.massNumber = massNumber
+
+    def __str__(self):
+        return self.sym
+
+    def __repr__(self):
+        className = self.__class__.__name__
+        return "{}({!r}, {!r}, {!r})".format(
+            className, self.sym, self.chg, self.massNumber)
+
+    def __add__(self, other):
+        return (self, other)
+
+    def __eq__(self, other):
+
+        if self.sym != other.sym:
+            return False
+
+        if self.chg != other.chg:
+            return False
+
+        if self.massNumber != other.massNumber:
+            return False
+
+        return True;
 
 class Nucleus(Particle):
 
     def __str__(self):
         return "({}){}".format(self.massNumber, self.sym)
-
 
 class UnbalancedCharge(Exception):
     def __init__(self, diff):
@@ -160,32 +189,50 @@ class ChainReaction():
         return Result
 
 
-# Part 1 [40]
-# print(Reaction((li6, d), (he4, he4)))
-# (6)Li + (2)H -> (4)He + (4)He
-print(Reaction((li6, d), (he4, he4)))
+if __name__ == '__main__':
 
-# Part 2 [10]
-# Extend particle class to have + operator acting on two particles
-# which will result in a tuple containing them so that:
-# print(Reaction(li6 + d, he4 + he4))
-# print(Reaction((li6, d), (he4, he4)))
-print(li6 + d)
+    # Part 1 [40]
+    # print(Reaction((li6, d), (he4, he4)))
+    # (6)Li + (2)H -> (4)He + (4)He
 
-# Part 3 [50]
+    print("Self test #1:\nReaction((li6, d), (he4, he4)) == '(6)Li + (2)H -> (4)He + (4)He'")
+    if str(Reaction((li6, d), (he4, he4))) == "(6)Li + (2)H -> (4)He + (4)He":
+        print("Successful")
+    else:
+        print("Failure")
 
-# one of the principal reactions powering the Sun
-he3 = Nucleus ( "He" , 2 , 3) # not defined above
 
-chnPP = ChainReaction ( " proton - proton ( branch I ) " )
-for rctn in ( Reaction (( p , p ) , (d , ep , nu_e )) ,
-        Reaction (( p , p ) , (d , ep , nu_e )) ,
-        Reaction (( d , p ) , ( he3 , gamma )) ,
-        Reaction (( d , p ) , ( he3 , gamma )) ,
-        Reaction (( he3 , he3 ) , ( he4 , p , p ))):
-    chnPP . addReaction ( rctn )
+    # Part 2 [10]
+    # Extend particle class to have + operator acting on two particles
+    # which will result in a tuple containing them so that:
+    # print(Reaction(li6 + d, he4 + he4))
+    # print(Reaction((li6, d), (he4, he4)))
 
-#debugging.
-#print("\n")
+    print("\nSelf test #2:\nReaction(li6 + d, he4 + he4) == Reaction((li6, d), (he4, he4))\n{} == {}".format(Reaction(li6 + d, he4 + he4), Reaction((li6, d), (he4, he4))))
 
-print(chnPP)
+    if(str(Reaction(li6 + d, he4 + he4)) == str(Reaction((li6, d), (he4, he4)))):
+        print("Successful\n")
+    else:
+        print("Failed\n")
+
+    # Part 3 [50]
+    print("Self Test #3:\nChain reaction net matches expected output.")
+
+
+    # one of the principal reactions powering the Sun
+    he3 = Nucleus ( "He" , 2 , 3) # not defined above
+
+    chnPP = ChainReaction ( " proton - proton ( branch I ) " )
+    for rctn in ( Reaction (( p , p ) , (d , ep , nu_e )) ,
+            Reaction (( p , p ) , (d , ep , nu_e )) ,
+            Reaction (( d , p ) , ( he3 , gamma )) ,
+            Reaction (( d , p ) , ( he3 , gamma )) ,
+            Reaction (( he3 , he3 ) , ( he4 , p , p ))):
+        chnPP . addReaction ( rctn )
+
+    Expected_Result = "p + p + p + p -> e+ + nu_e + e+ + nu_e + gamma + gamma + (4)He"
+
+    if Expected_Result in str(chnPP):
+        print("Successful")
+    else:
+        print("Failure")
