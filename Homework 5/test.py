@@ -1,0 +1,1 @@
+from tkinter import *from keyboard import Keyboarddef press(key):    print(key)root = Tk()root.title('key')kbd = Keyboard(root, press)kbd.grid()root.mainloop()
